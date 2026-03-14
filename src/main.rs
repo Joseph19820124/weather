@@ -141,16 +141,13 @@ Supported timezones:
 
         eprintln!("Generating image: {}", prompt);
 
-        // banana always writes output.png in cwd; we run it in /tmp then move
+        // Call banana CLI: banana generate <prompt> -o <output>
         let status = Command::new("banana")
-            .args(["-p", &prompt, "-resolution", &resolution])
-            .current_dir("/tmp")
+            .args(["generate", &prompt, "-o", &output])
             .status()
             .expect("banana not found");
 
         if status.success() {
-            std::fs::rename("/tmp/output.png", &output)
-                .expect("failed to move output.png");
             println!("Image saved to {}", output);
         } else {
             eprintln!("banana failed");
